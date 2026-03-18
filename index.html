@@ -1,85 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>SyncPro ROI Calculator</title>
-<style>
-    body { font-family: Arial, sans-serif; max-width: 700px; margin: 50px auto; padding: 20px; background: #f4f4f4; }
-    h1 { color: #004080; }
-    label { display: block; margin-top: 10px; }
-    input { padding: 5px; width: 100%; max-width: 200px; margin-top: 5px; }
-    .results { margin-top: 20px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
-</style>
+    <meta charset="UTF-8">
+    <title>Careview SyncPro Savings Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f7f9fc;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        .results {
+            margin-top: 25px;
+            padding: 15px;
+            background: #eef5ff;
+            border-radius: 8px;
+        }
+        .results p {
+            margin: 8px 0;
+        }
+        .highlight {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+    </style>
 </head>
 <body>
 
-<h1>Careview SyncPro Savings Calculator</h1>
-<p>Estimate how much time and cost you can save by automating participant budgets and funding periods with SyncPro.</p>
+<div class="container">
+    <h1>SyncPro Savings Calculator</h1>
 
-<label>Number of Participants:
-    <input type="number" id="numParticipants" value="50">
-</label>
+    <label>Number of Participants</label>
+    <input id="numParticipants" type="number" value="20">
 
-<label>Support Categories per Participant:
-    <input type="number" id="numCategories" value="5">
-</label>
+    <label>Support Categories per Participant</label>
+    <input id="numCategories" type="number" value="3">
 
-<label>Funding Periods per Category:
-    <input type="number" id="numPeriods" value="5">
-</label>
+    <label>Funding Periods per Category</label>
+    <input id="numPeriods" type="number" value="5">
 
-<label>Admin Hourly Rate (AUD):
-    <input type="number" id="hourlyRate" value="40">
-</label>
+    <label>Time per Support Category (minutes)</label>
+    <input id="timePerCategory" type="number" value="2">
 
-<label>Time to manually set up 1 funding period (minutes):
-    <input type="number" id="timePerPeriod" value="10">
-</label>
+    <label>Time per Funding Period (minutes)</label>
+    <input id="timePerPeriod" type="number" value="5">
 
-<div class="results">
-    <h2>Results</h2>
-    <p>Manual Admin Cost: $<span id="manualCost">0</span></p>
-    <p>Automated Admin Cost: $<span id="autoCost">0</span></p>
-    <p>SyncPro Subscription Cost: $<span id="syncProCost">0</span></p>
-    <p><strong>Total Automated Cost: $<span id="totalAutoCost">0</span></strong></p>
-    <p><strong>Estimated Savings: $<span id="savings">0</span></strong></p>
+    <label>Admin Hourly Rate ($)</label>
+    <input id="hourlyRate" type="number" value="40">
+
+    <label>SyncPro Processing Time per Participant (minutes)</label>
+    <input id="syncTime" type="number" value="5">
+
+    <div class="results">
+        <p>Manual Cost: $<span id="manualCost"></span></p>
+        <p>SyncPro Admin Cost: $<span id="autoCost"></span></p>
+        <p>SyncPro Subscription: $<span id="syncProCost"></span></p>
+        <p><b>Total SyncPro Cost:</b> $<span id="totalAutoCost"></span></p>
+
+        <hr>
+
+        <p class="highlight">Monthly Savings: $<span id="savings"></span></p>
+        <p>Hours Saved per Month: <span id="hoursSaved"></span> hrs</p>
+
+        <hr>
+
+        <p class="highlight">Annual Savings: $<span id="annualSavings"></span></p>
+        <p>Annual Hours Saved: <span id="annualHoursSaved"></span> hrs</p>
+    </div>
 </div>
 
 <script>
 function calculate() {
-    let participants = parseFloat(document.getElementById('numParticipants').value);
-    let categories = parseFloat(document.getElementById('numCategories').value);
-    let periods = parseFloat(document.getElementById('numPeriods').value);
-    let rate = parseFloat(document.getElementById('hourlyRate').value);
-    let manualMinutes = parseFloat(document.getElementById('timePerPeriod').value);
+    let participants = parseFloat(document.getElementById('numParticipants').value) || 0;
+    let categories = parseFloat(document.getElementById('numCategories').value) || 0;
+    let periods = parseFloat(document.getElementById('numPeriods').value) || 0;
+    let minutesPerCategory = parseFloat(document.getElementById('timePerCategory').value) || 0;
+    let minutesPerFunding = parseFloat(document.getElementById('timePerPeriod').value) || 0;
+    let rate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+    let syncTime = parseFloat(document.getElementById('syncTime').value) || 0;
 
-    // Manual cost
-    let totalManualMinutes = participants * categories * periods * manualMinutes;
+    let syncCostPerParticipant = 1.5;
+
+    // Manual calculations
+    let totalCategories = participants * categories;
+    let categoryMinutes = totalCategories * minutesPerCategory;
+
+    let totalFundingPeriods = totalCategories * periods;
+    let fundingMinutes = totalFundingPeriods * minutesPerFunding;
+
+    let totalManualMinutes = categoryMinutes + fundingMinutes;
     let manualHours = totalManualMinutes / 60;
     let manualCost = manualHours * rate;
 
-    // Automated cost
-    let autoMinutesPerParticipant = 5; // SyncPro sets up budgets in 5 minutes
-    let autoHours = (autoMinutesPerParticipant * participants) / 60;
-    let autoCost = autoHours * rate;
+    // SyncPro calculations
+    let syncHours = (participants * syncTime) / 60;
+    let syncAdminCost = syncHours * rate;
+    let subscriptionCost = participants * syncCostPerParticipant;
 
-    // SyncPro subscription
-    let subscriptionCost = participants * 1.5;
-
-    let totalAutoCost = autoCost + subscriptionCost;
+    let totalAutoCost = syncAdminCost + subscriptionCost;
 
     // Savings
     let savings = manualCost - totalAutoCost;
+    let hoursSaved = manualHours - syncHours;
 
-    // Update HTML
+    let annualSavings = savings * 12;
+    let annualHoursSaved = hoursSaved * 12;
+
+    // Output
     document.getElementById('manualCost').innerText = manualCost.toFixed(2);
-    document.getElementById('autoCost').innerText = autoCost.toFixed(2);
+    document.getElementById('autoCost').innerText = syncAdminCost.toFixed(2);
     document.getElementById('syncProCost').innerText = subscriptionCost.toFixed(2);
     document.getElementById('totalAutoCost').innerText = totalAutoCost.toFixed(2);
     document.getElementById('savings').innerText = savings.toFixed(2);
+    document.getElementById('hoursSaved').innerText = hoursSaved.toFixed(2);
+    document.getElementById('annualSavings').innerText = annualSavings.toFixed(2);
+    document.getElementById('annualHoursSaved').innerText = annualHoursSaved.toFixed(2);
 }
 
-// Run calculation when input changes
+// Auto-run on input change
 document.querySelectorAll('input').forEach(input => {
     input.addEventListener('input', calculate);
 });
