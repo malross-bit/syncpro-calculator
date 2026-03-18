@@ -4,104 +4,87 @@
 <meta charset="UTF-8">
 <title>SyncPro ROI Calculator</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f5f7fa;
-        padding: 30px;
-    }
-    .container {
-        max-width: 600px;
-        background: #ffffff;
-        padding: 25px;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    h2 {
-        margin-bottom: 20px;
-        color: #1f3c88;
-    }
-    label {
-        display: block;
-        margin-top: 10px;
-        font-weight: bold;
-    }
-    input {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    .results {
-        margin-top: 20px;
-        padding: 15px;
-        background: #eef4ff;
-        border-radius: 8px;
-    }
-    .highlight {
-        font-size: 18px;
-        font-weight: bold;
-        color: #0a7cff;
-    }
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 50px auto; padding: 20px; background: #f4f4f4; }
+    h1 { color: #004080; }
+    label { display: block; margin-top: 10px; }
+    input { padding: 5px; width: 100%; max-width: 200px; margin-top: 5px; }
+    .results { margin-top: 20px; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
 </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h2>SyncPro ROI Calculator</h2>
+<h1>Careview SyncPro Savings Calculator</h1>
+<p>Estimate how much time and cost you can save by automating participant budgets and funding periods with SyncPro.</p>
 
-    <label>Participants per month</label>
-    <input type="number" id="participants" value="100">
+<label>Number of Participants:
+    <input type="number" id="numParticipants" value="50">
+</label>
 
-    <label>Support categories per plan</label>
-    <input type="number" id="categories" value="5">
+<label>Support Categories per Participant:
+    <input type="number" id="numCategories" value="5">
+</label>
 
-    <label>Funding periods per category</label>
-    <input type="number" id="periods" value="5">
+<label>Funding Periods per Category:
+    <input type="number" id="numPeriods" value="5">
+</label>
 
-    <label>Minutes per funding period (manual)</label>
-    <input type="number" id="minutes" value="5">
+<label>Admin Hourly Rate (AUD):
+    <input type="number" id="hourlyRate" value="40">
+</label>
 
-    <label>Admin hourly rate ($)</label>
-    <input type="number" id="rate" value="40">
+<label>Time to manually set up 1 funding period (minutes):
+    <input type="number" id="timePerPeriod" value="10">
+</label>
 
-    <div class="results">
-        <p>Time saved per participant: <span class="highlight" id="timeSaved">0</span> hrs</p>
-        <p>Monthly time saved: <span class="highlight" id="monthlyTime">0</span> hrs</p>
-        <p>Monthly cost saving: <span class="highlight" id="monthlyCost">$0</span></p>
-        <p>Annual cost saving: <span class="highlight" id="annualCost">$0</span></p>
-    </div>
+<div class="results">
+    <h2>Results</h2>
+    <p>Manual Admin Cost: $<span id="manualCost">0</span></p>
+    <p>Automated Admin Cost: $<span id="autoCost">0</span></p>
+    <p>SyncPro Subscription Cost: $<span id="syncProCost">0</span></p>
+    <p><strong>Total Automated Cost: $<span id="totalAutoCost">0</span></strong></p>
+    <p><strong>Estimated Savings: $<span id="savings">0</span></strong></p>
 </div>
 
 <script>
 function calculate() {
-    let participants = parseFloat(document.getElementById("participants").value) || 0;
-    let categories = parseFloat(document.getElementById("categories").value) || 0;
-    let periods = parseFloat(document.getElementById("periods").value) || 0;
-    let minutes = parseFloat(document.getElementById("minutes").value) || 0;
-    let rate = parseFloat(document.getElementById("rate").value) || 0;
+    let participants = parseFloat(document.getElementById('numParticipants').value);
+    let categories = parseFloat(document.getElementById('numCategories').value);
+    let periods = parseFloat(document.getElementById('numPeriods').value);
+    let rate = parseFloat(document.getElementById('hourlyRate').value);
+    let manualMinutes = parseFloat(document.getElementById('timePerPeriod').value);
 
-    let totalFunding = categories * periods;
-    let manualHours = (totalFunding * minutes) / 60;
-    let syncHours = 5 / 60;
+    // Manual cost
+    let totalManualMinutes = participants * categories * periods * manualMinutes;
+    let manualHours = totalManualMinutes / 60;
+    let manualCost = manualHours * rate;
 
-    let timeSaved = manualHours - syncHours;
-    let monthlyTime = timeSaved * participants;
-    let monthlyCost = monthlyTime * rate;
-    let annualCost = monthlyCost * 12;
+    // Automated cost
+    let autoMinutesPerParticipant = 5; // SyncPro sets up budgets in 5 minutes
+    let autoHours = (autoMinutesPerParticipant * participants) / 60;
+    let autoCost = autoHours * rate;
 
-    document.getElementById("timeSaved").innerText = timeSaved.toFixed(2);
-    document.getElementById("monthlyTime").innerText = monthlyTime.toFixed(0);
-    document.getElementById("monthlyCost").innerText = "$" + monthlyCost.toLocaleString();
-    document.getElementById("annualCost").innerText = "$" + annualCost.toLocaleString();
+    // SyncPro subscription
+    let subscriptionCost = participants * 1.5;
+
+    let totalAutoCost = autoCost + subscriptionCost;
+
+    // Savings
+    let savings = manualCost - totalAutoCost;
+
+    // Update HTML
+    document.getElementById('manualCost').innerText = manualCost.toFixed(2);
+    document.getElementById('autoCost').innerText = autoCost.toFixed(2);
+    document.getElementById('syncProCost').innerText = subscriptionCost.toFixed(2);
+    document.getElementById('totalAutoCost').innerText = totalAutoCost.toFixed(2);
+    document.getElementById('savings').innerText = savings.toFixed(2);
 }
 
-// Run on load + whenever inputs change
-document.querySelectorAll("input").forEach(input => {
-    input.addEventListener("input", calculate);
+// Run calculation when input changes
+document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', calculate);
 });
 
+// Initial calculation
 calculate();
 </script>
 
