@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     
     <div style="display: flex; align-items: center; gap: 15px;">
-        <img src="Careview Background Logo 2.png" alt="Careview Logo" 
+        <img src="Careview Logo.jpg" alt="Careview Logo" 
              style="max-width: 160px;">
 
         <div>
@@ -14,15 +14,6 @@
             See how much time and money you can save with automation
         </p>
     </div>
-
-    </div>
-    
-    <p style="color: #666; margin: 0; font-size: 14px;">
-        Calculate your automation savings
-    </p>
-</div>    
-
-</div>
     
     <style>
         body {
@@ -113,8 +104,26 @@ Enter the average number of categories you would normally manually setup within 
   </small>
 </div>
     
-    <label>Funding Periods per Category - Enter the average number of funding periods per support category you would manually be entering</label>
-    <input id="numPeriods" type="number" value="5">
+   <div class="form-group">
+  <!-- Short label for the input -->
+  <label for="numFundPeriods">Number of Funding Periods</label>
+
+  <!-- Input field -->
+  <input 
+    type="number" 
+    id="numFundPeriods" 
+    name="numFundPeriods" 
+    value="5"
+    placeholder="Enter number of funding periods" 
+    min="0"
+    class="form-control"
+  >
+
+  <!-- Full instructions / helper text -->
+  <small class="form-text text-muted">
+Enter the average number of funding periods per support category you would manually be entering
+  </small>
+</div>
 
     <label>Time per Support Category (minutes)</label>
     <input id="timePerCategory" type="number" value="2">
