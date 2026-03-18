@@ -71,8 +71,26 @@
 <div class="container">
     <h1>SyncPro Savings Calculator</h1>
 
-    <label>Number of Participants - Enter the number of clients you would manually update each month e.g. new Service Contracts, plan rollovers etc</label>
-    <input id="numParticipants" type="number" value="20">
+   <div class="form-group">
+  <!-- Short label for the input -->
+  <label for="numParticipants">Number of Participants</label>
+
+  <!-- Input field -->
+  <input 
+    type="number" 
+    id="numParticipants" 
+    name="numParticipants" 
+    value="20"
+    placeholder="Enter number of participants" 
+    min="0"
+    class="form-control"
+  >
+
+  <!-- Full instructions / helper text -->
+  <small class="form-text text-muted">
+    Enter the number of clients you would manually update each month, e.g., new Service Contracts, plan rollovers, etc.
+  </small>
+</div>
 
     <label>Support Categories per Participant - Enter the average number of categories you would normally manually setup within the service contract each month </label>
     <input id="numCategories" type="number" value="3">
