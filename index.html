@@ -2,18 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    
-    <div style="display: flex; align-items: center; gap: 15px;">
-        <img src="Careview Logo.jpg" alt="Careview Logo" 
-             style="max-width: 160px;">
+    <title>SyncPro Savings Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f7f9fc; }
+        h1 { color: #2c3e50; }
+        .container { background: white; padding: 25px; border-radius: 10px; max-width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input { width: 100%; padding: 8px; margin-top: 5px; }
+        .results { margin-top: 25px; padding: 15px; background: #eef5ff; border-radius: 8px; }
+        .results p { margin: 8px 0; }
+        .highlight { font-size: 18px; font-weight: bold; color: #1a73e8; }
+    </style>
+</head>
+<body>
 
-        <div>
-        
-            <h1 style="margin: 0;">SyncPro Savings Calculator</h1>
-        <p style="color: #666; margin-top: 5px;">
-            See how much time and money you can save with automation
-        </p>
+<!-- Logo + Header -->
+<div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+    <img src="Careview Logo.jpg" alt="Careview Logo" style="max-width: 160px;">
+    <div>
+        <h1 style="margin: 0;">SyncPro Savings Calculator</h1>
+        <p style="color: #666; margin-top: 5px;">See how much time and money you can save with automation</p>
     </div>
+</div>
     
     <style>
         body {
@@ -158,8 +168,8 @@ Enter the average number of funding periods per support category you would manua
 <script>
 function calculate() {
     let participants = parseFloat(document.getElementById('numParticipants').value) || 0;
-    let categories = parseFloat(document.getElementById('numCategories').value) || 0;
-    let periods = parseFloat(document.getElementById('numPeriods').value) || 0;
+    let categories = parseFloat(document.getElementById('supCategories').value) || 0;
+    let periods = parseFloat(document.getElementById('numFundPeriods').value) || 0;
     let minutesPerCategory = parseFloat(document.getElementById('timePerCategory').value) || 0;
     let minutesPerFunding = parseFloat(document.getElementById('timePerPeriod').value) || 0;
     let rate = parseFloat(document.getElementById('hourlyRate').value) || 0;
