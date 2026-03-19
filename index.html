@@ -3,147 +3,219 @@
 <head>
 <meta charset="UTF-8">
 <title>SyncPro Savings Calculator</title>
+
 <style>
-    body { font-family: Arial, sans-serif; margin: 40px; background: #f7f9fc; }
-    h1 { color: #2c3e50; }
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background: #f7f9fc;
+}
 
-    /* Header */
-    .header {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-    .header img { max-width: 160px; }
+/* Centered container */
+.main-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
 
-    /* Main layout */
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+.header img {
+    max-width: 160px;
+}
+
+/* Layout */
+.calculator-wrapper {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Inputs grid */
+.inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 30px;
+}
+
+/* Form */
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+    cursor: pointer;
+    color: #1a73e8;
+    font-weight: bold;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 220px;
+    background-color: #333;
+    color: #fff;
+    text-align: left;
+    padding: 8px;
+    border-radius: 6px;
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8em;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Results card */
+.results {
+    background: #eef5ff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid #1a73e8;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.results p {
+    margin: 10px 0;
+}
+
+.highlight {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #1a73e8;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
     .calculator-wrapper {
-        display: flex;
-        gap: 40px;
-        align-items: flex-start;
-        flex-wrap: wrap;
+        grid-template-columns: 1fr;
     }
 
-    /* LEFT: Inputs */
     .inputs {
-        flex: 1;
-        min-width: 300px;
+        grid-template-columns: 1fr;
     }
-
-    /* RIGHT: Results (PROMINENT) */
-    .results {
-        flex: 0 0 320px;
-        background: #eef5ff;
-        padding: 25px;
-        border-radius: 12px;
-        border: 2px solid #1a73e8;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-        position: sticky;
-        top: 20px; /* stays visible while scrolling */
-    }
-
-    .results p {
-        margin: 12px 0;
-        font-size: 1.1em;
-    }
-
-    .highlight {
-        font-size: 1.5em;
-        font-weight: bold;
-        color: #1a73e8;
-    }
-
-    label {
-        display: block;
-        margin-top: 12px;
-        font-weight: bold;
-        font-size: 0.95em;
-    }
-
-    /* Smaller input boxes */
-    .inputs input {
-        width: 100%;
-        max-width: 120px;
-        padding: 6px;
-        margin-top: 4px;
-    }
-
-    .form-text {
-        font-size: 0.85em;
-        color: #666;
-    }
-
-    /* Mobile */
-    @media (max-width: 768px) {
-        .calculator-wrapper {
-            flex-direction: column;
-        }
-        .results {
-            position: relative;
-            top: 0;
-            width: 100%;
-        }
-    }
+}
 </style>
 </head>
+
 <body>
 
-<!-- Header -->
-<div class="header">
-    <img src="Careview Logo.jpg" alt="Careview Logo">
-    <div>
-        <h1 style="margin: 0;">SyncPro Savings Calculator</h1>
-        <p style="color: #666; margin-top: 5px;">
-            See how much time and money you can save with automation
-        </p>
-    </div>
-</div>
+<div class="main-container">
 
-<div class="calculator-wrapper">
-
-    <!-- LEFT: INPUTS -->
-    <div class="inputs">
-
-        <label for="numParticipants">Number of Participants</label>
-        <input type="number" id="numParticipants" value="20">
-        <small class="form-text">Monthly clients updated</small>
-
-        <label for="supCategories">Support Categories</label>
-        <input type="number" id="supCategories" value="3">
-
-        <label for="numFundPeriods">Funding Periods</label>
-        <input type="number" id="numFundPeriods" value="5">
-
-        <label for="timePerCategory">Minutes per Category</label>
-        <input type="number" id="timePerCategory" value="2">
-
-        <label for="timePerPeriod">Minutes per Period</label>
-        <input type="number" id="timePerPeriod" value="5">
-
-        <label for="hourlyRate">Hourly Rate ($)</label>
-        <input type="number" id="hourlyRate" value="40">
-
-        <label for="syncTime">SyncPro Time (min)</label>
-        <input type="number" id="syncTime" value="5">
-
+    <!-- Header -->
+    <div class="header">
+        <img src="Careview Logo.jpg" alt="Careview Logo">
+        <div>
+            <h1 style="margin: 0;">SyncPro Savings Calculator</h1>
+            <p style="color: #666; margin-top: 5px;">
+                See how much time and money you can save with automation
+            </p>
+        </div>
     </div>
 
-    <!-- RIGHT: RESULTS -->
-    <div class="results">
-        <p>Manual Cost: $<span id="manualCost"></span></p>
-        <p>SyncPro Admin Cost: $<span id="autoCost"></span></p>
-        <p>SyncPro Subscription: $<span id="syncProCost"></span></p>
-        <p><b>Total SyncPro Cost:</b> $<span id="totalAutoCost"></span></p>
+    <!-- Calculator -->
+    <div class="calculator-wrapper">
 
-        <hr>
+        <!-- Inputs -->
+        <div class="inputs">
 
-        <p class="highlight">Monthly Savings: $<span id="savings"></span></p>
-        <p>Hours Saved per Month: <span id="hoursSaved"></span> hrs</p>
+            <div class="form-group">
+                <label for="numParticipants">
+                    Number of Participants
+                    <span class="tooltip">ⓘ
+                        <span class="tooltip-text">
+                            Number of clients manually updated each month (e.g. service contracts, plan rollovers)
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="numParticipants" value="20">
+            </div>
 
-        <hr>
+            <div class="form-group">
+                <label for="supCategories">
+                    Support Categories
+                    <span class="tooltip">ⓘ
+                        <span class="tooltip-text">
+                            Average number of categories set up per participant
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="supCategories" value="3">
+            </div>
 
-        <p class="highlight">Annual Savings: $<span id="annualSavings"></span></p>
-        <p>Annual Hours Saved: <span id="annualHoursSaved"></span> hrs</p>
+            <div class="form-group">
+                <label for="numFundPeriods">
+                    Funding Periods
+                    <span class="tooltip">ⓘ
+                        <span class="tooltip-text">
+                            Average number of funding periods per support category
+                        </span>
+                    </span>
+                </label>
+                <input type="number" id="numFundPeriods" value="5">
+            </div>
+
+            <div class="form-group">
+                <label for="timePerCategory">Minutes per Category</label>
+                <input type="number" id="timePerCategory" value="2">
+            </div>
+
+            <div class="form-group">
+                <label for="timePerPeriod">Minutes per Period</label>
+                <input type="number" id="timePerPeriod" value="5">
+            </div>
+
+            <div class="form-group">
+                <label for="hourlyRate">Hourly Rate ($)</label>
+                <input type="number" id="hourlyRate" value="40">
+            </div>
+
+            <div class="form-group">
+                <label for="syncTime">SyncPro Time (min)</label>
+                <input type="number" id="syncTime" value="5">
+            </div>
+
+        </div>
+
+        <!-- Results -->
+        <div class="results">
+            <p>Manual Cost: $<span id="manualCost"></span></p>
+            <p>SyncPro Admin Cost: $<span id="autoCost"></span></p>
+            <p>SyncPro Subscription: $<span id="syncProCost"></span></p>
+            <p><b>Total SyncPro Cost:</b> $<span id="totalAutoCost"></span></p>
+
+            <hr>
+
+            <p class="highlight">Monthly Savings: $<span id="savings"></span></p>
+            <p>Hours Saved per Month: <span id="hoursSaved"></span> hrs</p>
+
+            <hr>
+
+            <p class="highlight">Annual Savings: $<span id="annualSavings"></span></p>
+            <p>Annual Hours Saved: <span id="annualHoursSaved"></span> hrs</p>
+        </div>
+
     </div>
 
 </div>
@@ -192,7 +264,10 @@ function calculate() {
     document.getElementById('annualHoursSaved').innerText = annualHoursSaved.toFixed(2);
 }
 
-document.querySelectorAll('input').forEach(input => input.addEventListener('input', calculate));
+document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', calculate);
+});
+
 calculate();
 </script>
 
