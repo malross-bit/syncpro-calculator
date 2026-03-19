@@ -11,13 +11,11 @@ body {
     background: #f7f9fc;
 }
 
-/* Centered container */
 .main-container {
     max-width: 1100px;
     margin: 0 auto;
 }
 
-/* Header */
 .header {
     display: flex;
     align-items: center;
@@ -28,7 +26,6 @@ body {
     max-width: 160px;
 }
 
-/* Layout */
 .calculator-wrapper {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -36,14 +33,12 @@ body {
     align-items: start;
 }
 
-/* Inputs grid */
 .inputs {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px 30px;
 }
 
-/* Form */
 .form-group label {
     display: flex;
     align-items: center;
@@ -87,7 +82,7 @@ body {
     opacity: 1;
 }
 
-/* Results card */
+/* Results */
 .results {
     background: #eef5ff;
     padding: 20px;
@@ -96,14 +91,18 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
+.results h3 {
+    margin-top: 10px;
+}
+
 .results p {
-    margin: 10px 0;
+    margin: 8px 0;
 }
 
 .highlight {
     font-size: 1.3em;
     font-weight: bold;
-    color: #1a73e8;
+    color: green;
 }
 
 /* Mobile */
@@ -123,90 +122,76 @@ body {
 
 <div class="main-container">
 
-    <!-- Header -->
     <div class="header">
         <img src="Careview Logo.jpg" alt="Careview Logo">
         <div>
-            <h1 style="margin: 0;">SyncPro Savings Calculator</h1>
-            <p style="color: #666; margin-top: 5px;">
-                See how much time and money you can save with automation
-            </p>
+            <h1 style="margin: 0;">SyncPro ROI Calculator</h1>
+            <p style="color: #666;">Understand your efficiency and cost savings</p>
         </div>
     </div>
 
-    <!-- Calculator -->
     <div class="calculator-wrapper">
 
         <!-- Inputs -->
         <div class="inputs">
 
             <div class="form-group">
-                <label for="numParticipants">
+                <label>
                     Participants
                     <span class="tooltip">ⓘ
-                        <span class="tooltip-text">
-                            Number of clients manually updated each month (e.g. service contracts, plan rollovers)
-                        </span>
+                        <span class="tooltip-text">Clients updated monthly</span>
                     </span>
                 </label>
                 <input type="number" id="numParticipants" value="20">
             </div>
 
             <div class="form-group">
-                <label for="supCategories">
+                <label>
                     Categories
                     <span class="tooltip">ⓘ
-                        <span class="tooltip-text">
-                            Average number of categories set up per participant
-                        </span>
+                        <span class="tooltip-text">Categories per participant</span>
                     </span>
                 </label>
                 <input type="number" id="supCategories" value="3">
             </div>
 
             <div class="form-group">
-                <label for="numFundPeriods">
+                <label>
                     Periods
                     <span class="tooltip">ⓘ
-                        <span class="tooltip-text">
-                            Average number of funding periods per support category
-                        </span>
+                        <span class="tooltip-text">Funding periods per category</span>
                     </span>
                 </label>
                 <input type="number" id="numFundPeriods" value="5">
             </div>
 
             <div class="form-group">
-                <label for="timePerCategory">
+                <label>
                     Min / Category
                     <span class="tooltip">ⓘ
-                        <span class="tooltip-text">
-                            Enter the time spent manually setting up category budgets
-                        </span>
+                        <span class="tooltip-text">Time to set up category budgets</span>
                     </span>
                 </label>
                 <input type="number" id="timePerCategory" value="2">
             </div>
 
             <div class="form-group">
-                <label for="timePerPeriod">
+                <label>
                     Min / Period
                     <span class="tooltip">ⓘ
-                        <span class="tooltip-text">
-                            Enter the time spent manually setting up funding periods
-                        </span>
+                        <span class="tooltip-text">Time to set up funding periods</span>
                     </span>
                 </label>
                 <input type="number" id="timePerPeriod" value="5">
             </div>
 
             <div class="form-group">
-                <label for="hourlyRate">Hourly $</label>
+                <label>Hourly $</label>
                 <input type="number" id="hourlyRate" value="40">
             </div>
 
             <div class="form-group">
-                <label for="syncTime">Sync Time (min)</label>
+                <label>Sync Time (min)</label>
                 <input type="number" id="syncTime" value="5">
             </div>
 
@@ -214,20 +199,28 @@ body {
 
         <!-- Results -->
         <div class="results">
-            <p>Manual Cost: $<span id="manualCost"></span></p>
-            <p>SyncPro Admin Cost: $<span id="autoCost"></span></p>
+
+            <h3>Current State</h3>
+            <p>Manual Effort: <span id="manualHours"></span> hrs</p>
+            <p>Total Manual Cost: $<span id="manualCost"></span></p>
+
+            <hr>
+
+            <h3>Future State</h3>
+            <p>SyncPro Admin Time: <span id="syncHours"></span> hrs</p>
             <p>SyncPro Subscription: $<span id="syncProCost"></span></p>
-            <p><b>Total SyncPro Cost:</b> $<span id="totalAutoCost"></span></p>
+            <p><b>Total SyncPro Cost: $<span id="totalAutoCost"></span></b></p>
 
             <hr>
 
+            <h3>Savings</h3>
             <p class="highlight">Monthly Savings: $<span id="savings"></span></p>
-            <p>Hours Saved per Month: <span id="hoursSaved"></span> hrs</p>
-
-            <hr>
+            <p>Hours Saved: <span id="hoursSaved"></span> hrs</p>
 
             <p class="highlight">Annual Savings: $<span id="annualSavings"></span></p>
-            <p>Annual Hours Saved: <span id="annualHoursSaved"></span> hrs</p>
+
+            <p><b>Payback Period: <span id="payback"></span> months</b></p>
+
         </div>
 
     </div>
@@ -236,13 +229,13 @@ body {
 
 <script>
 function calculate() {
-    let participants = parseFloat(document.getElementById('numParticipants').value) || 0;
-    let categories = parseFloat(document.getElementById('supCategories').value) || 0;
-    let periods = parseFloat(document.getElementById('numFundPeriods').value) || 0;
-    let minutesPerCategory = parseFloat(document.getElementById('timePerCategory').value) || 0;
-    let minutesPerFunding = parseFloat(document.getElementById('timePerPeriod').value) || 0;
-    let rate = parseFloat(document.getElementById('hourlyRate').value) || 0;
-    let syncTime = parseFloat(document.getElementById('syncTime').value) || 0;
+    let participants = +document.getElementById('numParticipants').value || 0;
+    let categories = +document.getElementById('supCategories').value || 0;
+    let periods = +document.getElementById('numFundPeriods').value || 0;
+    let minutesPerCategory = +document.getElementById('timePerCategory').value || 0;
+    let minutesPerFunding = +document.getElementById('timePerPeriod').value || 0;
+    let rate = +document.getElementById('hourlyRate').value || 0;
+    let syncTime = +document.getElementById('syncTime').value || 0;
 
     let syncCostPerParticipant = 1.5;
 
@@ -266,22 +259,21 @@ function calculate() {
     let hoursSaved = manualHours - syncHours;
 
     let annualSavings = savings * 12;
-    let annualHoursSaved = hoursSaved * 12;
 
+    let payback = totalAutoCost > 0 ? (totalAutoCost / savings) : 0;
+
+    document.getElementById('manualHours').innerText = manualHours.toFixed(2);
     document.getElementById('manualCost').innerText = manualCost.toFixed(2);
-    document.getElementById('autoCost').innerText = syncAdminCost.toFixed(2);
+    document.getElementById('syncHours').innerText = syncHours.toFixed(2);
     document.getElementById('syncProCost').innerText = subscriptionCost.toFixed(2);
     document.getElementById('totalAutoCost').innerText = totalAutoCost.toFixed(2);
     document.getElementById('savings').innerText = savings.toFixed(2);
     document.getElementById('hoursSaved').innerText = hoursSaved.toFixed(2);
     document.getElementById('annualSavings').innerText = annualSavings.toFixed(2);
-    document.getElementById('annualHoursSaved').innerText = annualHoursSaved.toFixed(2);
+    document.getElementById('payback').innerText = savings > 0 ? payback.toFixed(1) : "N/A";
 }
 
-document.querySelectorAll('input').forEach(input => {
-    input.addEventListener('input', calculate);
-});
-
+document.querySelectorAll('input').forEach(i => i.addEventListener('input', calculate));
 calculate();
 </script>
 
