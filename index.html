@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SyncPro Savings Calculator</title>
+<title>SyncPro ROI Calculator</title>
 
 <style>
 body {
@@ -190,11 +190,6 @@ body {
                 <input type="number" id="hourlyRate" value="40">
             </div>
 
-            <div class="form-group">
-                <label>Sync Time (min)</label>
-                <input type="number" id="syncTime" value="5">
-            </div>
-
         </div>
 
         <!-- Results -->
@@ -235,8 +230,8 @@ function calculate() {
     let minutesPerCategory = +document.getElementById('timePerCategory').value || 0;
     let minutesPerFunding = +document.getElementById('timePerPeriod').value || 0;
     let rate = +document.getElementById('hourlyRate').value || 0;
-    let syncTime = +document.getElementById('syncTime').value || 0;
 
+    let syncTime = 5; // 🔥 hidden fixed value
     let syncCostPerParticipant = 1.5;
 
     let totalCategories = participants * categories;
