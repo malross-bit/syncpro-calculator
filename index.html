@@ -31,7 +31,14 @@
         }
 
         label { display: block; margin-top: 15px; font-weight: bold; }
-        input { width: 100%; padding: 8px; margin-top: 5px; }
+
+        /* Make inputs smaller */
+        .inputs input {
+            width: 100%;       /* keeps responsive behavior */
+            max-width: 120px;  /* smaller boxes */
+            padding: 6px;
+            margin-top: 5px;
+        }
 
         .highlight { font-size: 18px; font-weight: bold; color: #1a73e8; }
 
