@@ -24,15 +24,22 @@
         flex-wrap: wrap;
     }
 
-    /* LEFT: Results (BIG + PROMINENT) */
-    .results {
+    /* LEFT: Inputs */
+    .inputs {
         flex: 1;
-        min-width: 320px;
+        min-width: 300px;
+    }
+
+    /* RIGHT: Results (PROMINENT) */
+    .results {
+        flex: 0 0 320px;
         background: #eef5ff;
         padding: 25px;
         border-radius: 12px;
         border: 2px solid #1a73e8;
         box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        position: sticky;
+        top: 20px; /* stays visible while scrolling */
     }
 
     .results p {
@@ -41,14 +48,9 @@
     }
 
     .highlight {
-        font-size: 1.6em;
+        font-size: 1.5em;
         font-weight: bold;
         color: #1a73e8;
-    }
-
-    /* RIGHT: Inputs (compact) */
-    .inputs {
-        flex: 0 0 300px;
     }
 
     label {
@@ -58,15 +60,16 @@
         font-size: 0.95em;
     }
 
+    /* Smaller input boxes */
     .inputs input {
         width: 100%;
-        max-width: 100px;
-        padding: 5px;
+        max-width: 120px;
+        padding: 6px;
         margin-top: 4px;
     }
 
     .form-text {
-        font-size: 0.8em;
+        font-size: 0.85em;
         color: #666;
     }
 
@@ -75,7 +78,9 @@
         .calculator-wrapper {
             flex-direction: column;
         }
-        .inputs {
+        .results {
+            position: relative;
+            top: 0;
             width: 100%;
         }
     }
@@ -96,7 +101,34 @@
 
 <div class="calculator-wrapper">
 
-    <!-- LEFT: RESULTS -->
+    <!-- LEFT: INPUTS -->
+    <div class="inputs">
+
+        <label for="numParticipants">Number of Participants</label>
+        <input type="number" id="numParticipants" value="20">
+        <small class="form-text">Monthly clients updated</small>
+
+        <label for="supCategories">Support Categories</label>
+        <input type="number" id="supCategories" value="3">
+
+        <label for="numFundPeriods">Funding Periods</label>
+        <input type="number" id="numFundPeriods" value="5">
+
+        <label for="timePerCategory">Minutes per Category</label>
+        <input type="number" id="timePerCategory" value="2">
+
+        <label for="timePerPeriod">Minutes per Period</label>
+        <input type="number" id="timePerPeriod" value="5">
+
+        <label for="hourlyRate">Hourly Rate ($)</label>
+        <input type="number" id="hourlyRate" value="40">
+
+        <label for="syncTime">SyncPro Time (min)</label>
+        <input type="number" id="syncTime" value="5">
+
+    </div>
+
+    <!-- RIGHT: RESULTS -->
     <div class="results">
         <p>Manual Cost: $<span id="manualCost"></span></p>
         <p>SyncPro Admin Cost: $<span id="autoCost"></span></p>
@@ -112,32 +144,6 @@
 
         <p class="highlight">Annual Savings: $<span id="annualSavings"></span></p>
         <p>Annual Hours Saved: <span id="annualHoursSaved"></span> hrs</p>
-    </div>
-
-    <!-- RIGHT: INPUTS -->
-    <div class="inputs">
-
-        <label for="numParticipants">Participants</label>
-        <input type="number" id="numParticipants" value="20">
-
-        <label for="supCategories">Categories</label>
-        <input type="number" id="supCategories" value="3">
-
-        <label for="numFundPeriods">Funding Periods</label>
-        <input type="number" id="numFundPeriods" value="5">
-
-        <label for="timePerCategory">Min / Category</label>
-        <input type="number" id="timePerCategory" value="2">
-
-        <label for="timePerPeriod">Min / Period</label>
-        <input type="number" id="timePerPeriod" value="5">
-
-        <label for="hourlyRate">Hourly $</label>
-        <input type="number" id="hourlyRate" value="40">
-
-        <label for="syncTime">Sync Time (min)</label>
-        <input type="number" id="syncTime" value="5">
-
     </div>
 
 </div>
